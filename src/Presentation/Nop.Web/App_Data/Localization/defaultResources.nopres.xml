@@ -15962,7 +15962,10 @@
   </LocaleResource>
   <LocaleResource Name="Languages.Selector.Label">
     <Value>Languages selector</Value>
-  </LocaleResource>    
+  </LocaleResource>
+  <LocaleResource Name="MainMenu.AjaxFailure">
+    <Value>Failed to open menu. Please refresh the page and try one more time.</Value>
+  </LocaleResource>
   <LocaleResource Name="Manufacturers">
     <Value>Manufacturers</Value>
   </LocaleResource>

@@ -71,6 +71,9 @@ set @resources='
   <LocaleResource Name="AjaxCart.Failure">
     <Value>Failed to add the product. Please refresh the page and try one more time.</Value>
   </LocaleResource>
+  <LocaleResource Name="MainMenu.AjaxFailure">
+    <Value>Failed to open menu. Please refresh the page and try one more time.</Value>
+  </LocaleResource>
 </Language>
 '
 
