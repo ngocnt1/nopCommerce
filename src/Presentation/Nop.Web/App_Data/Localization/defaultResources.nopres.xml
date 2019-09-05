@@ -14523,6 +14523,9 @@
   <LocaleResource Name="Admin.Vendors.VendorNotes.Fields.Note.Validation">
     <Value>Vendor note can not be empty.</Value>
   </LocaleResource>
+  <LocaleResource Name="AjaxCart.Failure">
+    <Value>Failed to add the product. Please refresh the page and try one more time.</Value>
+  </LocaleResource>
   <LocaleResource Name="BackInStockSubscriptions.AlreadySubscribed">
     <Value>You're already subscribed for this product back in stock notification</Value>
   </LocaleResource>

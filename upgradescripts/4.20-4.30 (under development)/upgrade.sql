@@ -68,6 +68,9 @@ set @resources='
   <LocaleResource Name="PaymentMethod.SpecifyMethodError">
     <Value>Please specify payment method.</Value>
   </LocaleResource>
+  <LocaleResource Name="AjaxCart.Failure">
+    <Value>Failed to add the product. Please refresh the page and try one more time.</Value>
+  </LocaleResource>
 </Language>
 '
 
