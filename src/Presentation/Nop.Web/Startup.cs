@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO.Compression;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nop.Core.Configuration;
 using Nop.Web.Framework.Infrastructure.Extensions;
 
 namespace Nop.Web
@@ -16,6 +19,7 @@ namespace Nop.Web
 
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private NopConfig _nopConfig;
 
         #endregion
 
@@ -35,7 +39,20 @@ namespace Nop.Web
         /// <param name="services">Collection of service descriptors</param>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            return services.ConfigureApplicationServices(_configuration, _hostingEnvironment);
+            var s = services.ConfigureApplicationServices(_configuration, _hostingEnvironment);
+            _nopConfig = s.GetService<NopConfig>();
+            if (_nopConfig.UseResponseCompression)
+            {
+                //https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-2.2
+                services.AddResponseCompression();
+                services.Configure<GzipCompressionProviderOptions>(options =>
+                {
+                    options.Level = (CompressionLevel)_nopConfig.ResponseCompressionMode;
+                });
+            }
+
+
+            return s;
         }
 
         /// <summary>
@@ -43,7 +60,12 @@ namespace Nop.Web
         /// </summary>
         /// <param name="application">Builder for configuring an application's request pipeline</param>
         public void Configure(IApplicationBuilder application)
-        {
+        {           
+            if (_nopConfig.UseResponseCompression)
+            {
+                //https://docs.microsoft.com/en-us/aspnet/core/performance/response-compression?view=aspnetcore-2.2
+                application.UseResponseCompression();
+            }
             application.ConfigureRequestPipeline();
         }
     }

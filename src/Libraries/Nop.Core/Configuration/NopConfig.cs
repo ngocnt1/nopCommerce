@@ -109,7 +109,18 @@ namespace Nop.Core.Configuration
         /// By default the cookie-based TempData provider is used to store TempData in cookies.
         /// </summary>
         public bool UseSessionStateTempDataProvider { get; set; }
-        
+
+        /// <summary>
+        /// Enable http response compression
+        /// </summary>
+        public bool UseResponseCompression { get; set; }
+
+        /// <summary>
+        /// Http response compression mode
+        /// </summary>
+
+        public int ResponseCompressionMode { get; set; }
+
         /// <summary>
         /// Gets a value indicating whether we should use Azure blob storage
         /// </summary>
