@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Nop.Core.Configuration
 {
@@ -12,7 +13,7 @@ namespace Nop.Core.Configuration
         /// It's ignored (always enabled) in development environment
         /// </summary>
         public bool DisplayFullErrorStack { get; set; }
-        
+
         /// <summary>
         /// Gets or sets connection string for Azure BLOB storage
         /// </summary>
@@ -120,6 +121,16 @@ namespace Nop.Core.Configuration
         /// </summary>
 
         public int ResponseCompressionMode { get; set; }
+
+        /// <summary>
+        /// Build version number
+        /// </summary>
+        public string BuildVersion { get; set; }
+
+        /// <summary>
+        /// Life time for Memory Cache Manager
+        /// </summary>
+        public TimeSpan MemcacheLifeTime { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether we should use Azure blob storage

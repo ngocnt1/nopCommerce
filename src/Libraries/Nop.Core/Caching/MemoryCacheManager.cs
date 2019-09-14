@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EasyCaching.Core;
+using Nop.Core.Configuration;
 
 namespace Nop.Core.Caching
 {
@@ -12,14 +13,17 @@ namespace Nop.Core.Caching
         #region Fields
 
         private readonly IEasyCachingProvider _provider;
-
+        private readonly NopConfig _noConfig;
         #endregion
 
         #region Ctor
 
-        public MemoryCacheManager(IEasyCachingProvider  provider)
+        public MemoryCacheManager(IEasyCachingProvider provider,
+            NopConfig noConfig
+            )
         {
             _provider = provider;
+            _noConfig = noConfig;
         }
 
         #endregion
@@ -36,10 +40,10 @@ namespace Nop.Core.Caching
         /// <returns>The cached value associated with the specified key</returns>
         public T Get<T>(string key, Func<T> acquire, int? cacheTime = null)
         {
-            if(cacheTime <= 0)
+            if (cacheTime <= 0)
                 return acquire();
 
-            return _provider.Get(key, acquire, TimeSpan.FromMinutes(cacheTime ?? NopCachingDefaults.CacheTime))
+            return _provider.Get(key, acquire, _noConfig?.MemcacheLifeTime ?? TimeSpan.FromMinutes(cacheTime ?? NopCachingDefaults.CacheTime))
                 .Value;
         }
 
@@ -56,7 +60,7 @@ namespace Nop.Core.Caching
             if (cacheTime <= 0)
                 return await acquire();
 
-            var t = await _provider.GetAsync(key, acquire, TimeSpan.FromMinutes(cacheTime ?? NopCachingDefaults.CacheTime));
+            var t = await _provider.GetAsync(key, acquire, _noConfig?.MemcacheLifeTime ?? TimeSpan.FromMinutes(cacheTime ?? NopCachingDefaults.CacheTime));
             return t.Value;
         }
 
@@ -68,7 +72,7 @@ namespace Nop.Core.Caching
         /// <param name="cacheTime">Cache time in minutes</param>
         public void Set(string key, object data, int cacheTime)
         {
-            if(cacheTime <= 0)
+            if (cacheTime <= 0)
                 return;
 
             _provider.Set(key, data, TimeSpan.FromMinutes(cacheTime));

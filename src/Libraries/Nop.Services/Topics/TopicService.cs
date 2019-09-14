@@ -31,7 +31,7 @@ namespace Nop.Services.Topics
         private readonly IRepository<Topic> _topicRepository;
         private readonly IStoreMappingService _storeMappingService;
         private readonly IWorkContext _workContext;
-
+        private readonly IStaticCacheManager _staticCacheManager;
         #endregion
 
         #region Ctor
@@ -39,6 +39,7 @@ namespace Nop.Services.Topics
         public TopicService(CatalogSettings catalogSettings,
             IAclService aclService,
             ICacheManager cacheManager,
+            IStaticCacheManager staticCacheManager,
             IEventPublisher eventPublisher,
             IRepository<AclRecord> aclRepository,
             IRepository<StoreMapping> storeMappingRepository,
@@ -55,6 +56,7 @@ namespace Nop.Services.Topics
             _topicRepository = topicRepository;
             _storeMappingService = storeMappingService;
             _workContext = workContext;
+            _staticCacheManager = staticCacheManager;
         }
 
         #endregion
@@ -208,6 +210,9 @@ namespace Nop.Services.Topics
 
             //cache
             _cacheManager.RemoveByPrefix(NopTopicDefaults.TopicsPrefixCacheKey);
+
+            //static cache
+            _staticCacheManager.RemoveByPrefix($"{NopTopicDefaults.TopicsPrefixCacheKey}{topic.SystemName}");
 
             //event notification
             _eventPublisher.EntityUpdated(topic);
