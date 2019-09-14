@@ -16,6 +16,6 @@ namespace Nop.Core.Caching
         /// <param name="acquire">Function to load item if it's not in the cache yet</param>
         /// <param name="cacheTime">Cache time in minutes; pass 0 to do not cache; pass null to use the default time</param>
         /// <returns>The cached value associated with the specified key</returns>
-        Task<T> GetAsync<T>(string key, Func<Task<T>> acquire, int? cacheTime = null);
+        Task<T> GetAsync<T>(string key, Func<Task<T>> acquire, int? cacheTime = null, bool isSlidingCache = false);
     }
 }

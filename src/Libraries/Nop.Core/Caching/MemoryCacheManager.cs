@@ -18,7 +18,7 @@ namespace Nop.Core.Caching
 
         #region Ctor
 
-        public MemoryCacheManager(IEasyCachingProvider provider,
+        public MemoryCacheManager(IEasyCachingProvider  provider,
             NopConfig noConfig
             )
         {
@@ -38,13 +38,28 @@ namespace Nop.Core.Caching
         /// <param name="acquire">Function to load item if it's not in the cache yet</param>
         /// <param name="cacheTime">Cache time in minutes; pass 0 to do not cache; pass null to use the default time</param>
         /// <returns>The cached value associated with the specified key</returns>
-        public T Get<T>(string key, Func<T> acquire, int? cacheTime = null)
+        public T Get<T>(string key, Func<T> acquire, int? cacheTime = null, bool isSlidingCache = false)
         {
-            if (cacheTime <= 0)
-                return acquire();
+            try
+            {
+                if (cacheTime <= 0)
+                    return acquire();
 
-            return _provider.Get(key, acquire, _noConfig?.MemcacheLifeTime ?? TimeSpan.FromMinutes(cacheTime ?? NopCachingDefaults.CacheTime))
-                .Value;
+                var expiration = _noConfig?.MemcacheLifeTime ?? TimeSpan.FromMinutes(cacheTime ?? NopCachingDefaults.CacheTime);
+
+                var t = _provider.Get(key, acquire, expiration)
+                    .Value;
+
+                if (isSlidingCache)
+                {
+                    _provider.Set(key, t, expiration);
+                }
+                return t;
+            }
+            catch (NullReferenceException)
+            {
+                return default(T);
+            }
         }
 
         /// <summary>
@@ -55,13 +70,26 @@ namespace Nop.Core.Caching
         /// <param name="acquire">Function to load item if it's not in the cache yet</param>
         /// <param name="cacheTime">Cache time in minutes; pass 0 to do not cache; pass null to use the default time</param>
         /// <returns>The cached value associated with the specified key</returns>
-        public async Task<T> GetAsync<T>(string key, Func<Task<T>> acquire, int? cacheTime = null)
+        public async Task<T> GetAsync<T>(string key, Func<Task<T>> acquire, int? cacheTime = null, bool isSlidingCache = false)
         {
-            if (cacheTime <= 0)
-                return await acquire();
+            try
+            {
+                if (cacheTime <= 0)
+                    return await acquire();
 
-            var t = await _provider.GetAsync(key, acquire, _noConfig?.MemcacheLifeTime ?? TimeSpan.FromMinutes(cacheTime ?? NopCachingDefaults.CacheTime));
-            return t.Value;
+                var expiration = _noConfig?.MemcacheLifeTime ?? TimeSpan.FromMinutes(cacheTime ?? NopCachingDefaults.CacheTime);
+
+                var t = await _provider.GetAsync(key, acquire, expiration);
+                if (isSlidingCache)
+                {
+                    await _provider.SetAsync(key, t, expiration);                    
+                }
+                return t.Value;
+            }
+            catch (NullReferenceException)
+            {
+                return default(T);
+            }
         }
 
         /// <summary>
@@ -72,7 +100,7 @@ namespace Nop.Core.Caching
         /// <param name="cacheTime">Cache time in minutes</param>
         public void Set(string key, object data, int cacheTime)
         {
-            if (cacheTime <= 0)
+            if(cacheTime <= 0)
                 return;
 
             _provider.Set(key, data, TimeSpan.FromMinutes(cacheTime));

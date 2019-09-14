@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EasyCaching.InMemory;
 using Nop.Core.Caching;
+using Nop.Core.Configuration;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -17,7 +18,7 @@ namespace Nop.Core.Tests.Caching
         {
             _cacheManager = new MemoryCacheManager(new DefaultInMemoryCachingProvider("nopCommerce.tests",
                 new List<IInMemoryCaching> {new InMemoryCaching("nopCommerce.tests", new InMemoryCachingOptions())},
-                new InMemoryOptions()));
+                new InMemoryOptions()), new NopConfig());
         }
 
         [Test]
