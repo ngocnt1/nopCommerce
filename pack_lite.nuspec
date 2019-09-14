@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <!-- Required elements-->
+    <id>Simplz</id>
+    <version>1.0.0.0</version>
+    <description>eCommerce</description>
+    <authors>ngocnt</authors>
+
+    <!-- Optional elements -->
+    <!-- ... -->
+  </metadata>
+  <!-- Optional 'files' node -->
+  <files>       
+    <file src="**\Nop.*" target="simplz"/>   
+	<file src="wwwroot\**\*.*" target="simplz\wwwroot" />  
+	<file src="Views\**\*.*" target="simplz\Views" />  
+	<file src="Scripts\**\*.*" target="simplz\Scripts" />  
+	<file src="Themes\**\*.*" target="simplz\Themes" />  
+	<file src="Content\**\*.*" target="simplz\Content" />  
+	<file src="Areas\**\*.*" target="simplz\Areas" />  
+	<file src="Plugins\**\*.*" target="simplz\Plugins" />  
+	<file src="App_Data\**\*.*" target="simplz\App_Data" />  
+  </files>
+</package>
