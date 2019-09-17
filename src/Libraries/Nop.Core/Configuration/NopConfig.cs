@@ -132,6 +132,8 @@ namespace Nop.Core.Configuration
         /// </summary>
         public TimeSpan MemcacheLifeTime { get; set; }
 
+        public bool EnableMinifyBundler { get; set; }
+
         /// <summary>
         /// Gets a value indicating whether we should use Azure blob storage
         /// </summary>

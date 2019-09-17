@@ -1,0 +1,16 @@
+[
+  {
+    "outputFileName": "Themes/DefaultClean/Content/css/all.css",
+    "inputFiles": [
+      "lib/jquery-ui/jquery-ui-1.12.1.custom/jquery-ui.min.css",
+      "Themes/DefaultClean/Content/css/styles.css"
+    ]
+  },
+  {
+    "outputFileName": "Themes/DefaultClean/Content/css/all.rtl.css",
+    "inputFiles": [
+      "lib/jquery-ui/jquery-ui-1.12.1.custom/jquery-ui.min.css",
+      "Themes/DefaultClean/Content/css/styles.rtl.css"
+    ]
+  }
+]
