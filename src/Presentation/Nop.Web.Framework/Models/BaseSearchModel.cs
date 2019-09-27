@@ -1,4 +1,5 @@
-﻿using Nop.Core.Domain.Common;
+﻿using System.Collections.Generic;
+using Nop.Core.Domain.Common;
 using Nop.Core.Infrastructure;
 
 namespace Nop.Web.Framework.Models
@@ -50,6 +51,9 @@ namespace Nop.Web.Framework.Models
         /// </summary>
         public int Length { get; set; }
 
+        public ICollection<Columns> Columns { get; set; }
+
+        public List<OrderBy> Order { get; set; }
         #endregion
 
         #region Methods
@@ -85,5 +89,26 @@ namespace Nop.Web.Framework.Models
         }
 
         #endregion
+    }
+
+    public class Columns
+    {
+        public string Data { get; set; }
+        public string Name { get; set; }
+        public string Searchable { get; set; }
+        public string Orderable { get; set; }
+        public List<Search> Search { get; set; }
+    }
+
+    public class Search
+    {
+        public bool Regex { get; set; }
+        public string Value { get; set; }
+    }
+
+    public class OrderBy
+    {
+        public string Column { get; set; }
+        public string Dir { get; set; }
     }
 }
